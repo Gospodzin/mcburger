@@ -10,7 +10,7 @@ var captchaSolver = require("./CaptchaSolver")
 
 var failures = 0
 var iteration = 0
-runFromTimeToTime(5000)
+runFromTimeToTime(20000)
 
 function runFromTimeToTime(meanTime)
 {
@@ -27,6 +27,8 @@ function runFromTimeToTime(meanTime)
 function runInstance()
 {
 	var myburger = null
+	
+	var burgerId = "541769265fd15"
 	
 	var headersMain = 
 	{
@@ -45,7 +47,7 @@ function runInstance()
 		'Accept': 'application/json, text/javascript, */*; q=0.01',
 		'X-Requested-With': 'XMLHttpRequest',
 		'User-Agent': headersMain['User-Agent'],
-		'Referer': 'http://mojburger.mcdonalds.pl/detail/540f519f0a73c',
+		'Referer': 'http://mojburger.mcdonalds.pl/detail/' + burgerId,
 		'Accept-Encoding': 'gzip,deflate,sdch',
 		'Accept-Language': 'en-US,en;q=0.8'
 	}
@@ -61,11 +63,12 @@ function runInstance()
 		'ci_csrf_token': '',
 		'Accept': '*/*',
 		'X-Requested-With': 'XMLHttpRequest',
-		'Referer': 'http://mojburger.mcdonalds.pl/detail/540f519f0a73c',
+		'Referer': 'http://mojburger.mcdonalds.pl/detail/' + burgerId,
 		'Accept-Encoding': 'gzip,deflate,sdch',
 		'Accept-Language': 'en-US,en;q=0.8'
 	}
 	
+		
 	var control =
 		[{op: reqMain, parms: []},
 		 {op: reqStats, parms: []},
@@ -86,7 +89,7 @@ function runInstance()
 	{
 		request(
 				{
-					uri: "http://mojburger.mcdonalds.pl/detail/540f519f0a73c",
+					uri: "http://mojburger.mcdonalds.pl/detail/" + burgerId,
 					method: "GET",
 					headers: headersMain
 			},
@@ -165,7 +168,7 @@ function runInstance()
 					headers: headers,
 					form: {
 						captcha: solveCaptcha(htmlCaptcha),
-						burger_id: '540f519f0a73c' ,
+						burger_id: burgerId,
 						vote: '1'
 					}
 			},
