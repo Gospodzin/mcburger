@@ -2,7 +2,6 @@
  * 
  */
 
- 
 var cheerio = require("cheerio")
 var request = require("request")
 var uaProvider = require("./UserAgentProvider")
@@ -10,7 +9,7 @@ var captchaSolver = require("./CaptchaSolver")
 
 var failures = 0
 var iteration = 0
-runFromTimeToTime(20000)
+runFromTimeToTime(8000)
 
 function runFromTimeToTime(meanTime)
 {
@@ -18,8 +17,8 @@ function runFromTimeToTime(meanTime)
 			function()
 			{	
 				console.log("ITEARTION: " + iteration++)
-				runInstance()
 				runFromTimeToTime(meanTime)
+				runInstance()
 			}, 
 			2*meanTime * Math.random())
 }
@@ -29,6 +28,8 @@ function runInstance()
 	var myburger = null
 	
 	var burgerId = "541769265fd15"
+	//	var burgerId = "541f07fe4b9c8"
+
 	
 	var headersMain = 
 	{
@@ -114,9 +115,12 @@ function runInstance()
 			function(error, response, body) 
 			{
 				console.log("STATS")
-				myburger = response.headers['set-cookie'][0].split(";")[0]
-				headers.Cookie = myburger
-				run(control)
+				if(response)
+				{
+					myburger = response.headers['set-cookie'][0].split(";")[0]
+					headers.Cookie = myburger
+					run(control)
+				}
 			}
 		)
 	}
@@ -133,10 +137,14 @@ function runInstance()
 			function(error, response, body) 
 			{
 				console.log("CAPTCHA")
-				myburger = response.headers['set-cookie'][0].split(";")[0]
-				headers.Cookie = myburger
-				htmlCaptcha = JSON.parse(body.substring(1)).data.captcha
-				run(control)
+				if(body)
+				if(response)
+				{
+					myburger = response.headers['set-cookie'][0].split(";")[0]
+					headers.Cookie = myburger
+					htmlCaptcha = JSON.parse(body.substring(1)).data.captcha
+					run(control)
+				}
 			}
 		)
 	}
@@ -177,15 +185,18 @@ function runInstance()
 			{
 				console.log("VOTES")
 				console.log(body)
-				if(JSON.parse(body.substring(1)).status == 'ok')
-					console.log("SUCCESS!!!")
-				else
+				if(body)
 				{
-					console.log("FAILURE###")
-					failures++
+					if(JSON.parse(body.substring(1)).status == 'ok')
+						console.log("SUCCESS!!!")
+					else
+					{
+						console.log("FAILURE###")
+						failures++
+					}
+					console.log("FAILURES: " + failures)
+					run(control)
 				}
-				console.log("FAILURES: " + failures)
-				run(control)
 			}
 		)
 	}
