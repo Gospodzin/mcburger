@@ -9,7 +9,7 @@ var captchaSolver = require("./CaptchaSolver")
 
 var failures = 0
 var iteration = 0
-runFromTimeToTime(8000)
+runFromTimeToTime(3000)
 
 function runFromTimeToTime(meanTime)
 {
@@ -27,8 +27,9 @@ function runInstance()
 {
 	var myburger = null
 	
-	var burgerId = "541769265fd15"
+	//	var burgerId = "541769265fd15"
 	//	var burgerId = "541f07fe4b9c8"
+	  var burgerId = "5421afe436c36"
 
 	
 	var headersMain = 
